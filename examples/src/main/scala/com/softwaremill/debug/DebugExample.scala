@@ -11,14 +11,14 @@ object DebugExample extends App {
   printparam(f(x))
 
   val z = 10
-  debug(z)
-  debug(z*2)
-  debug(f(z))
+  debug1(z)
+  debug1(z*2)
+  debug1(f(z))
 
   def test() {
     val p = 11
-    debug(p)
-    debug(p + z)
+    debug1(p)
+    debug1(p + z)
   }
 
   test()

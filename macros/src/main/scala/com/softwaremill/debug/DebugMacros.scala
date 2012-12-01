@@ -19,12 +19,13 @@ object DebugMacros {
     reify { println(param.splice) }
   }
 
-  def debug(param: Any): Unit = macro debug_impl
+  def debug1(param: Any): Unit = macro debug1_impl
 
-  def debug_impl(c: Context)(param: c.Expr[Any]): c.Expr[Unit] = {
+  def debug1_impl(c: Context)(param: c.Expr[Any]): c.Expr[Unit] = {
     import c.universe._
     val paramRep = show(param.tree)
     val paramRepTree = Literal(Constant(paramRep))
-    reify(println(c.Expr[String](paramRepTree).splice + " = " + param.splice))
+    val paramRepExpr = c.Expr[String](paramRepTree)
+    reify { println(paramRepExpr.splice + " = " + param.splice) }
   }
 }
