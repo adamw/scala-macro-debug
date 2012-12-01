@@ -26,6 +26,19 @@ object DebugExample extends App {
 
   test()
 
+  header("Debug macro")
+  val a = 10
+
+  def test2() {
+    val b = 20
+    val c = 30
+    debug(b, c)
+    debug("Got as far as here", a, b , c)
+    debug("Adding", a+b, "should be", c)
+  }
+
+  test2()
+
   // Helper methods
 
   def f(p: Int) = p + 1
