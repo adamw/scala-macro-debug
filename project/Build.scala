@@ -3,7 +3,7 @@ import Keys._
 
 object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq (
-    organization  := "com.softwaremill",
+    organization  := "com.softwaremill.scalamacrodebug",
     version       := "0.0.1-SNAPSHOT",
     scalaVersion  := "2.10.0",
     scalacOptions += "",
