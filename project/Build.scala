@@ -33,7 +33,7 @@ object ScalaMacroDebugBuild extends Build {
     "macros",
     file("macros"),
     settings = buildSettings ++ Seq(
-      libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-compiler" % _))
+      libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _))
   )
 
   lazy val examples: Project = Project(
