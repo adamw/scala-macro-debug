@@ -26,7 +26,7 @@ object ScalaMacroDebugBuild extends Build {
   lazy val root: Project = Project(
     "root",
     file("."),
-    settings = buildSettings
+    settings = buildSettings ++ Seq(publishArtifact := false)
   ) aggregate(macros, examples)
 
   lazy val macros: Project = Project(
@@ -39,6 +39,6 @@ object ScalaMacroDebugBuild extends Build {
   lazy val examples: Project = Project(
     "examples",
     file("examples"),
-    settings = buildSettings
+    settings = buildSettings ++ Seq(publishArtifact := false)
   ) dependsOn(macros)
 }
