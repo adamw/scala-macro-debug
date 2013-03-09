@@ -19,3 +19,9 @@ Example:
 Should print:
 
     Values in test, Test.this.v1 = 10, v2 = 20
+
+See the blog: ["Starting with Scala Macros: a short tutorial"](http://www.warski.org/blog/2012/12/starting-with-scala-macros-a-short-tutorial/).
+
+To use in your project, add the following dependency:
+
+    "com.softwaremill.scalamacrodebug" %% "macros" % "0.1"
