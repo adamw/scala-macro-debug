@@ -3,7 +3,27 @@ scala-macro-debug
 
 Scala macros to make debugging easier.
 
-Example:
+Comes in two flavors, `DebugMacros`, as described on the blog (see introduction below),
+and an enhanced version `DebugConsole`.
+
+`DebugMacros` example:
+
+    class Test {
+        import com.softwaremill.debug.DebugMacros._
+
+        val v1 = 10
+
+        def test() {
+            val v2 = 20
+            debug("Values in test", v1, v2)
+        }
+    }
+
+Should print:
+
+    Values in test, Test.this.v1 = 10, v2 = 20
+
+`DebugConsole` example:
 
     class Test {
         import com.softwaremill.debug.DebugConsole._
@@ -63,7 +83,7 @@ Getting the Project: SBT
 
 To use in your project, add the following dependency:
 
-    "com.softwaremill.scalamacrodebug" %% "macros" % "0.1"
+    "com.softwaremill.scalamacrodebug" %% "macros" % "0.2"
 
 Getting the Project: Maven
 --------------------------
@@ -73,7 +93,7 @@ To use in your project, add the following dependency:
     <dependency>
         <groupId>com.softwaremill.scalamacrodebug</groupId>
         <artifactId>macros_2.10</artifactId>
-        <version>0.1</version>
+        <version>0.2</version>
     </dependency>
 
 Usage
