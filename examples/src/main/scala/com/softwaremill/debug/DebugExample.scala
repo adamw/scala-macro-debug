@@ -1,7 +1,5 @@
 package com.softwaremill.debug
 
-import com.softwaremill.debug.tools.Sample
-
 object DebugExample extends App {
 
   def tutorialExamples() {
@@ -39,7 +37,10 @@ object DebugExample extends App {
 	    val b = 20
 	    val c = 30
 	    debug(b, c)
-	    debug("Got as far as here", a, b , c)
+	    debug(
+	    		"Got as far as here",
+	    		a,
+	    		b , c)
 	    debug("Adding", a+b, "should be", c)
 	  }
 
