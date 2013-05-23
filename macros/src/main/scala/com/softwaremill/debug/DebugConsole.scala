@@ -1,9 +1,12 @@
 package com.softwaremill.debug
 
 import language.experimental.macros
-
 import reflect.macros.Context
 import collection.JavaConversions._
+import scala.io.Source
+import java.io.File
+import scala.io.BufferedSource
+import com.softwaremill.debug.tools.ParametersStream
 
 
 
@@ -196,8 +199,9 @@ object DebugConsole {
 					0
 				else
 					params
+						.zip(getParameterLabels(params.length))
 						.slice(firstVariableIndex, params.length)
-						.map{param => show(param.tree).length()}
+						.map{case (param, label) => label.length()}
 						.max
 
 			val tab =
@@ -206,17 +210,16 @@ object DebugConsole {
 				else
 					" " * 4
 
-			val trees = params.zipWithIndex.map
-			{ case (param, i) =>
+			val trees = params.zip(getParameterLabels(params.length)).zipWithIndex.map
+			{ case ((param, label), i) =>
 
 				val msg =
 					if(hasTitle && i == 0) DEBUG_PREFIX
 					else
 					{
-						val title   = show(param.tree)
-						val padding = " " * (maxLabelLength - title.length())
+						val padding = " " * (maxLabelLength - label.length())
 
-						DEBUG_PREFIX + tab + title + padding + " = "
+						DEBUG_PREFIX + tab + label + padding + " = "
 					}
 
 				createPrint(msg, param, true).tree
@@ -226,12 +229,66 @@ object DebugConsole {
 			c.Expr[Unit](Block(trees.toList, Literal(Constant(()))))
 		}
 
+		private def findMin(tree: c.Tree): c.Position = {
+			if(tree.children.isEmpty)
+				tree.pos
+			else{
+				tree.children.map{t => findMin(t)}.foldLeft(tree.pos){(pos, tree) =>
+					if(tree.pos.line < pos.line) tree.pos
+					else if(pos.line < tree.pos.line) pos
+					else if(pos.column < tree.pos.column) pos
+					else tree.pos
+				}
+			}
+		}
+
+		private def nextBlock(stream: BufferedSource): String = {
+			val r = new StringBuilder()
+
+			val c = ""
+
+			r.toString()
+		}
+
+		private def nextParameter(stream: BufferedSource): String = {
+			val r = new StringBuilder()
+
+			
+
+			r.toString()
+		}
+
+		private def getParameterLabels(n: Int) = {
+
+			val stream = Source.fromFile(new File(c.enclosingUnit.source.file.path))
+
+			for(i <- 0 until (c.enclosingPosition.line - 1))
+				while(stream.hasNext && stream.next != '\n') ();
+
+				val min = c.enclosingPosition.column
+	
+				{
+					var i = 0
+
+					while(i < min) {
+						val c = stream.next
+						if(c == '\t') i += 8
+						else i += 1
+					}
+				}
+
+			val parameterGetter = new ParametersStream(stream)
+
+			(0 until n).map {num => parameterGetter.nextToken.getOrElse(c.abort(c.enclosingPosition, "Could not parse the parameter labels from source file")).trim()}.toArray
+
+		}
 
 
 		private def createSingleLineDebug(params: c.Expr[Any]*): c.Expr[Unit] =
 		{
-			val trees = params.zipWithIndex.map
-			{ case (param, i) =>
+
+			val trees = params.zip(getParameterLabels(params.length)).zipWithIndex.map
+			{ case ((param, label), i) =>
 
 				val isConstant = param.tree match {
 					case Literal(Constant(const))    =>   true
@@ -240,7 +297,7 @@ object DebugConsole {
 
 				val msg =
 					(if(i == 0) DEBUG_PREFIX else ", ") +
-					(if(!isConstant) show(param.tree) + " = " else "")
+					(if(!isConstant) label + " = " else "")
 
 				createPrint(msg, param, i >= params.length - 1).tree
 			}
