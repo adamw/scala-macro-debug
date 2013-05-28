@@ -11,3 +11,7 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+examples/.classpath
+examples/.project
+macros/.classpath
+macros/.project
