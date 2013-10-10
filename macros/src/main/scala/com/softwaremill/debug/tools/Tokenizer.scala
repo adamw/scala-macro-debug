@@ -3,6 +3,7 @@ package com.softwaremill.debug.tools
 import scala.io.Source
 import scala.collection.mutable.StringBuilder
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.Stack
 
 trait Tokenizer extends Iterator[String] {
 
@@ -10,65 +11,54 @@ trait Tokenizer extends Iterator[String] {
 
 	private var nextElement: Option[String] = null
 
-	private def step =
+	private def step = {
 		if(nextElement == null)
 			nextElement = nextToken
 
-	def hasNext: Boolean = {
-		step
-
-		nextElement match {
-			case None => false
-			case Some(_) => true
-		}
+		nextElement
 	}
 
-	def next(): String = {
-		step
+	override def hasNext: Boolean = step map {_ => true} getOrElse false
 
-		val r: String = nextElement.getOrElse(throw new IndexOutOfBoundsException())
+	override def next(): String = {
+		val r = step
 
 		nextElement = null
 
-		r
+		r getOrElse {throw new IndexOutOfBoundsException()}
 	}
 }
 
 abstract class Filter(source: Tokenizer) extends Tokenizer
 {
-	private var backup = List[String]()
 
-	protected def nextFromSource:Option[String] = {
+	private val backup: Stack[String] = Stack[String]()
+
+	protected def nextFromSource:Option[String] =
 		if(backup.isEmpty) source.nextToken
-		else {
-			val r = backup.head
-			backup = backup.tail
-			Some(r)
-		}
-	}
+		else Some(backup.pop)
 
-	protected def pushback(token: String) {
-		backup = token :: backup
-	}
+	protected def pushback(token: String) = backup push token
+
 
 	protected def everythingTo(finish: String): Option[String] = {
 		val a = nextFromSource
 
-		a match {
-			case None => None
-			case Some(aval) =>
+		a map { aval =>
 				val r = new StringBuilder()
 
 				var done = false
 				var nval = aval
 
-				while(!done){
-
-					if(nval == finish) {
+				while(!done)
+				{
+					if(nval == finish)
+					{
 						r.append(nval)
 						done = true
 					}
-					else {
+					else
+					{
 						val posibleEndAccumulator = ArrayBuffer(nval)
 						def posibleEnd = posibleEndAccumulator.mkString("");
 						var nextPosibleEndComponent = nextFromSource
@@ -103,7 +93,7 @@ abstract class Filter(source: Tokenizer) extends Tokenizer
 					}
 				}
 
-				Some(r.toString)
+				r.toString
 		}
 	}
 }
