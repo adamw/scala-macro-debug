@@ -4,8 +4,8 @@ import Keys._
 object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq (
     organization  := "com.softwaremill.scalamacrodebug",
-    version       := "0.3-SNAPSHOT",
-    scalaVersion  := "2.10.1",
+    version       := "0.3",
+    scalaVersion  := "2.10.3",
     // Sonatype OSS deployment
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"

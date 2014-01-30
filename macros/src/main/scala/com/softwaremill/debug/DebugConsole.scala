@@ -3,15 +3,24 @@ package com.softwaremill.debug
 import language.experimental.macros
 
 import reflect.macros.Context
-import collection.JavaConversions._
 
+trait DebugConsole {
+  /**
+   * Prints debug information in a multy-lined format. If the debugging is
+   * disabled, it does nothing. If no parameters are supplied, it prints the
+   * file and line where the debug invocation is placed. If the first
+   * parameteris a constant, it will be used as a title. All the other
+   * parameters are the debugged variables/expressions.
+   */
+  def debugReport(params: Any*): Unit = macro DebugConsole.debugReport_impl
 
-
+  def debug(params: Any*): Unit = macro DebugConsole.debug_impl
+}
 
 /**
  * Contains the debug method
  */
-object DebugConsole {
+object DebugConsole extends DebugConsole {
 
 
 
@@ -71,23 +80,6 @@ object DebugConsole {
 		}
 	}
 
-
-
-
-
-	/**
-	 * Prints debug information in a multy-lined format. If the debugging is
-	 * disabled, it does nothing. If no parameters are supplied, it prints the
-	 * file and line where the debug invocation is placed. If the first
-	 * parameteris a constant, it will be used as a title. All the other
-	 * parameters are the debugged variables/expressions.
-	 */
-	def debugReport(params: Any*): Unit = macro debugReport_impl
-
-
-
-
-
 	/**
 	 * The real implementation of the macro. To make things easy, a helper class
 	 * is created which has the full implementation.
@@ -101,7 +93,7 @@ object DebugConsole {
 
 
 
-	def debug(params: Any*): Unit = macro debug_impl
+
 
 	def debug_impl(c: Context)(params: c.Expr[Any]*): c.Expr[Unit] =
 	{

@@ -83,7 +83,7 @@ Getting the Project: SBT
 
 To use in your project, add the following dependency:
 
-    "com.softwaremill.scalamacrodebug" %% "macros" % "0.2"
+    "com.softwaremill.scalamacrodebug" %% "macros" % "0.3"
 
 Getting the Project: Maven
 --------------------------
@@ -93,7 +93,7 @@ To use in your project, add the following dependency:
     <dependency>
         <groupId>com.softwaremill.scalamacrodebug</groupId>
         <artifactId>macros_2.10</artifactId>
-        <version>0.2</version>
+        <version>0.3</version>
     </dependency>
 
 Usage
@@ -101,7 +101,14 @@ Usage
 
 Always include:
 
+    import com.softwaremill.debug.DebugMacros._
+
+Or:
+
     import com.softwaremill.debug.DebugConsole._
+
+You can also extend the `DebugMacros` or `DebugConsole` traits in your util-object/package-object, if you have such
+an object which you frequently import (then `debug` will be easily available without additional imports).
 
 The great strength of the debug methods is the ability to create a label for an expression to be debugged:
 
