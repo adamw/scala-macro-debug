@@ -83,7 +83,8 @@ Getting the Project: SBT
 
 To use in your project, add the following dependency:
 
-    "com.softwaremill.scalamacrodebug" %% "macros" % "0.3"
+    "com.softwaremill.scalamacrodebug" %% "macros" % "0.3" // scala 2.10
+    "com.softwaremill.scalamacrodebug" %% "macros" % "0.4" // scala 2.11
 
 Getting the Project: Maven
 --------------------------
@@ -92,8 +93,8 @@ To use in your project, add the following dependency:
 
     <dependency>
         <groupId>com.softwaremill.scalamacrodebug</groupId>
-        <artifactId>macros_2.10</artifactId>
-        <version>0.3</version>
+        <artifactId>macros_2.11</artifactId>
+        <version>0.4</version>
     </dependency>
 
 Usage
