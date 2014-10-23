@@ -2,7 +2,7 @@ package com.softwaremill.debug
 
 import language.experimental.macros
 
-import reflect.macros.Context
+import reflect.macros.blackbox.Context
 
 trait DebugMacros {
   def debug(params: Any*): Unit = macro DebugMacros.debug_impl
