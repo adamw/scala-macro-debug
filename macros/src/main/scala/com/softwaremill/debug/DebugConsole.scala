@@ -2,7 +2,7 @@ package com.softwaremill.debug
 
 import language.experimental.macros
 
-import reflect.macros.Context
+import reflect.macros.blackbox.Context
 
 trait DebugConsole {
   /**
@@ -160,9 +160,9 @@ object DebugConsole extends DebugConsole {
 		 * the debug has been called
 		 */
 		private def createPrintPosition =
-				createPrint(DEBUG_PREFIX +
-					c.enclosingUnit.source.file.path + " (line " +
-					c.enclosingPosition.line + ")")
+		  createPrint(DEBUG_PREFIX +
+			c.internal.enclosingOwner.pos.source.file.path + " (line " +
+			c.internal.enclosingOwner.pos.line + ")")
 
 
 
