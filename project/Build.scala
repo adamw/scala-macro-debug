@@ -5,8 +5,8 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq (
     organization  := "com.softwaremill.scalamacrodebug",
     version       := "0.4.1",
-    scalaVersion  := "2.11.8",
-    crossScalaVersions := List(scalaVersion.value, "2.12.1"),
+    scalaVersion  := "2.11.12",
+    crossScalaVersions := List(scalaVersion.value, "2.12.10", "2.13.1"),
     // Sonatype OSS deployment
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
